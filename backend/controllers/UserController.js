@@ -1,6 +1,6 @@
 import User from '../models/FriendSchema.js';
 import  jwt from 'jsonwebtoken';
-
+import recommendFriends from '../utils/recommendation.js';
 
 // Generate JWT
 export const generateToken = (id) => {
@@ -97,7 +97,25 @@ export const addFriend = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
+}
+
+export const getRecommendations = async (req, res) => {
+  const { userId } = req.params; // Directly use the userId from the URL parameter
+  console.log(userId);
+  if (!userId) {
+    return res.status(400).json({ message: 'User ID is missing' });
+  }
+
+  try {
+    // Call the recommendFriends function with the userId
+    const recommendations = await recommendFriends(userId);
+    res.json({ recommendations });
+  } catch (error) {
+    console.error('Error generating recommendations:', error);
+    res.status(500).json({ message: 'Error generating recommendations', error });
+  }
 };
+
 
 
 
