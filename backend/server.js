@@ -9,7 +9,10 @@ dotenv.config()
 
 
 const app=express();
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:5173', // Allow only your frontend's origin
+    credentials: true,              // Allow cookies and other credentials
+  }));
 app.use(express.json());
 
 //setting up mongodb uri
